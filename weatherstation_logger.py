@@ -34,16 +34,13 @@ class ExporterHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(output)
         else:
-            # Treat any other GET as a data push
+            # Treat any other GET as a data push from the WeatherStation
             self.handle_update(parsed)
 
     def do_POST(self):
         # also accept POSTs (rare for this URI, but safe)
         parsed = urlparse(self.path)
         length = int(self.headers.get('Content-Length', 0))
-        if length:
-            # you could read body here if needed
-            _ = self.rfile.read(length)
         self.handle_update(parsed)
 
     def handle_update(self, parsed):
